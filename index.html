@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejercicios Prácticos · M2_L1 Desarrollo Web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --surface-2: #f1f3f7;
+      --text: #1a1f2e;
+      --text-soft: #51596b;
+      --text-muted: #8089a1;
+      --border: #e5e8ef;
+      --primary: #4f46e5;
+      --primary-soft: #eef2ff;
+      --accent: #06b6d4;
+      --success: #10b981;
+      --success-soft: #ecfdf5;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 1px 2px rgba(20,25,45,.04), 0 1px 3px rgba(20,25,45,.04);
+      --shadow-md: 0 4px 12px rgba(20,25,45,.06), 0 2px 4px rgba(20,25,45,.04);
+      --shadow-lg: 0 20px 40px -12px rgba(20,25,45,.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+      background-image:
+        radial-gradient(at 0% 0%, rgba(79,70,229,.06) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(6,182,212,.05) 0px, transparent 50%);
+      min-height: 100vh;
+    }
+
+    code, pre, .mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+
+    /* ---------- HEADER ---------- */
+    .hero {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 44px 40px;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M0 0h80v1H0zM0 0v80h1V0z' fill='%23ffffff' fill-opacity='.06'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,.18);
+      padding: 6px 12px;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+    }
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      margin: 16px 0 12px;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+    }
+    .hero p {
+      font-size: 17px;
+      max-width: 620px;
+      color: rgba(255,255,255,.92);
+      margin: 0;
+    }
+
+    /* ---------- INTRO / RULES ---------- */
+    .rules {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 40px;
+    }
+    .rules h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin: 0 0 14px;
+    }
+    .rules ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text-soft);
+    }
+    .rules li { margin-bottom: 6px; }
+    .rules li::marker { color: var(--primary); }
+
+    /* ---------- TOC ---------- */
+    .toc {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+    .toc a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      text-decoration: none;
+      color: var(--text-soft);
+      font-size: 14px;
+      font-weight: 500;
+      transition: all .18s ease;
+    }
+    .toc a:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: var(--shadow-md);
+    }
+    .toc .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    /* ---------- EXERCISE CARD ---------- */
+    .exercise {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 28px;
+      transition: box-shadow .25s ease;
+    }
+    .exercise:hover { box-shadow: var(--shadow-md); }
+
+    .ex-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 22px;
+      padding-bottom: 22px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .ex-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      color: #fff;
+      font-weight: 700;
+      font-size: 18px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(79,70,229,.25);
+    }
+    .ex-title {
+      flex: 1;
+    }
+    .ex-title h2 {
+      margin: 0 0 4px;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+    }
+    .ex-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .ex-meta span::before { content: "·"; margin-right: 14px; color: var(--border); }
+    .ex-meta span:first-child::before { content: none; }
+
+    .ex-section {
+      margin-top: 22px;
+    }
+    .ex-section h3 {
+      font-size: 12px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin: 0 0 10px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ex-section h3 .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    .context {
+      background: var(--surface-2);
+      border-left: 3px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      color: var(--text-soft);
+      font-size: 15px;
+    }
+
+    .task {
+      color: var(--text-soft);
+    }
+    .task p { margin: 0 0 12px; }
+    .task ol, .task ul {
+      padding-left: 22px;
+      margin: 0;
+    }
+    .task ol li, .task ul li {
+      margin-bottom: 8px;
+    }
+    .task ol > li::marker { color: var(--primary); font-weight: 700; }
+    .task ul > li::marker { color: var(--accent); }
+    .task strong { color: var(--text); }
+
+    .criteria {
+      background: var(--success-soft);
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+    }
+    .criteria h3 { color: var(--success); }
+    .criteria h3 .dot { background: var(--success); }
+    .criteria ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #065f46;
+    }
+    .criteria ul li::marker { content: "✓  "; color: var(--success); font-weight: 700; }
+
+    /* code chips */
+    code {
+      background: var(--surface-2);
+      color: var(--primary);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 13.5px;
+      border: 1px solid var(--border);
+    }
+    .criteria code {
+      background: #fff;
+      border-color: #bbf7d0;
+      color: #047857;
+    }
+
+    a { color: var(--primary); text-decoration: none; border-bottom: 1px dashed var(--primary); transition: color .15s; }
+    a:hover { color: #3730a3; }
+
+    /* tip block */
+    .tip {
+      margin-top: 40px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      color: #78350f;
+      font-size: 15px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .tip-icon {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #fbbf24;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .delivery {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin-top: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+    .delivery h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .delivery p { color: var(--text-soft); margin: 0 0 8px; }
+
+    footer {
+      text-align: center;
+      margin-top: 56px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* responsive */
+    @media (max-width: 640px) {
+      .container { padding: 24px 16px 64px; }
+      .hero { padding: 32px 24px; }
+      .rules, .exercise, .delivery { padding: 24px 20px; }
+      .ex-head { gap: 12px; }
+      .ex-title h2 { font-size: 19px; }
+    }
+
+    .drive-cta-wrap { margin: 18px 0 22px; }
+    .drive-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #fff !important;
+      text-decoration: none;
+      border: none;
+      padding: 14px 22px 14px 18px;
+      border-radius: var(--radius);
+      box-shadow: 0 8px 20px -6px rgba(79,70,229,.45);
+      transition: transform .15s ease, box-shadow .2s ease;
+    }
+    .drive-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -8px rgba(79,70,229,.55);
+      color: #fff;
+    }
+    .drive-icon {
+      font-size: 26px;
+      background: rgba(255,255,255,.18);
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .drive-text { display: flex; flex-direction: column; line-height: 1.2; }
+    .drive-text strong { font-size: 15px; font-weight: 600; }
+    .drive-text small { font-size: 12.5px; opacity: .82; margin-top: 2px; }
+    .drive-arrow { font-size: 18px; margin-left: 6px; opacity: .85; }
+    .delivery-note { color: var(--text-muted); font-size: 14px; margin: 0; }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="hero">
+      <span class="hero-eyebrow">Módulo 2 · Lección 1</span>
+      <h1>Ejercicios Prácticos de HTML</h1>
+      <p>Cinco retos prácticos para aplicar lo aprendido en la presentación <strong>M2_L1 Desarrollo Web</strong>: estructura de un documento, etiquetas básicas, semántica HTML5 y herramientas del navegador.</p>
+    </header>
+
+    <section class="rules">
+      <h2>📋 Antes de empezar</h2>
+      <ul>
+        <li>Cada ejercicio se entrega como un archivo <code>.html</code> (excepto el último, que es de exploración).</li>
+        <li>Trabaja en <strong>VS Code</strong> con la extensión <strong>Live Server</strong> para ver tus cambios en tiempo real.</li>
+        <li>No hace falta usar CSS todavía: el foco está en la <strong>estructura</strong> y la <strong>semántica</strong>.</li>
+        <li>Antes de pedir ayuda, abre las <strong>DevTools</strong> (F12) y revisa la pestaña <strong>Elements</strong> para entender qué está pasando.</li>
+      </ul>
+    </section>
+
+    <nav class="toc" aria-label="Tabla de contenidos">
+      <a href="#ej1"><span class="num">1</span> Documento HTML</a>
+      <a href="#ej2"><span class="num">2</span> Encabezados y listas</a>
+      <a href="#ej3"><span class="num">3</span> Hipertexto</a>
+      <a href="#ej4"><span class="num">4</span> Semántica</a>
+      <a href="#ej5"><span class="num">5</span> DevTools</a>
+    </nav>
+
+    <!-- EJERCICIO 1 -->
+    <article class="exercise" id="ej1">
+      <div class="ex-head">
+        <div class="ex-badge">1</div>
+        <div class="ex-title">
+          <h2>Tu primer documento HTML válido</h2>
+          <div class="ex-meta">
+            <span>⏱ 15–20 min</span>
+            <span>🎯 Estructura básica</span>
+            <span>🏷️ <code>html</code> <code>head</code> <code>body</code></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-section">
+        <h3><span class="dot"></span>Contexto</h3>
+        <div class="context">
+          En la presentación vimos que HTML se organiza como un árbol genealógico: <code>&lt;html&gt;</code> es el abuelo, dentro vive <code>&lt;head&gt;</code> (la cédula de identidad invisible de la página) y <code>&lt;body&gt;</code> (todo lo que el usuario ve).
+        </div>
+      </div>
+
+      <div class="ex-section task">
+        <h3><span class="dot"></span>Qué debes hacer</h3>
+        <ol>
+          <li>Crea un archivo llamado <code>ejercicio-01.html</code>.</li>
+          <li>Construye la estructura mínima de un documento HTML5 correcto. Tu archivo debe:
+            <ul>
+              <li>Declarar que es un documento HTML5.</li>
+              <li>Tener un elemento raíz <code>&lt;html&gt;</code> con un atributo <code>lang</code> que indique que la página está en español.</li>
+              <li>Contener una sección <code>&lt;head&gt;</code> con un título que aparezca en la pestaña del navegador: <strong>"Mi primera página"</strong>.</li>
+              <li>Contener una sección <code>&lt;body&gt;</code> con un único encabezado de nivel 1 que diga tu nombre completo.</li>
+            </ul>
+          </li>
+          <li>Abre el archivo con Live Server y verifica que el título de la pestaña del navegador sea efectivamente "Mi primera página".</li>
+        </ol>
+      </div>
+
+      <div class="ex-section">
+        <h3><span class="dot"></span>Criterios de éxito</h3>
+        <div class="criteria">
+          <ul>
+            <li>El archivo abre sin errores.</li>
+            <li>Al validar el documento en <a href="https://validator.w3.org/" target="_blank" rel="noopener">validator.w3.org</a> no aparecen errores.</li>
+            <li>La pestaña del navegador muestra el título correcto.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- EJERCICIO 2 -->
+    <article class="exercise" id="ej2">
+      <div class="ex-head">
+        <div class="ex-badge">2</div>
+        <div class="ex-title">
+          <h2>Encabezados, párrafos y listas</h2>
+          <div class="ex-meta">
+            <span>⏱ 25–30 min</span>
+            <span>🎯 Jerarquía y contenido</span>
+            <span>🏷️ <code>h1</code> <code>h2</code> <code>p</code> <code>ul</code> <code>ol</code></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-section">
+        <h3><span class="dot"></span>Contexto</h3>
+        <div class="context">
+          En el slide 22 vimos varias etiquetas que viven dentro del <code>&lt;body&gt;</code>: encabezados (<code>&lt;h1&gt;</code> a <code>&lt;h3&gt;</code>), párrafos (<code>&lt;p&gt;</code>) y listas (<code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, <code>&lt;li&gt;</code>). El orden y la jerarquía importan: un <code>&lt;h1&gt;</code> no es lo mismo que un <code>&lt;h2&gt;</code>, y una lista ordenada no es lo mismo que una desordenada.
+        </div>
+      </div>
+
+      <div class="ex-section task">
+        <h3><span class="dot"></span>Qué debes hacer</h3>
+        <p>Crea un archivo <code>ejercicio-02.html</code> que contenga una <strong>biografía corta de un personaje real o ficticio que admires</strong>. La biografía debe respetar esta estructura informativa:</p>
+        <ol>
+          <li>Un <strong>título principal</strong> con el nombre del personaje.</li>
+          <li>Un <strong>subtítulo</strong> que diga "Biografía".</li>
+          <li>Un <strong>párrafo</strong> de 3 o 4 oraciones contando quién es y por qué es relevante.</li>
+          <li>Un <strong>subtítulo</strong> que diga "Logros más importantes".</li>
+          <li>Una <strong>lista ordenada</strong> con al menos 4 logros (porque están rankeados de más a menos importante).</li>
+          <li>Un <strong>subtítulo</strong> que diga "Frases célebres".</li>
+          <li>Una <strong>lista desordenada</strong> con al menos 3 frases (porque el orden no importa).</li>
+          <li>Un <strong>subtítulo más pequeño</strong> que diga "Fuentes" y un párrafo final indicando de dónde sacaste la información.</li>
+        </ol>
+      </div>
+
+      <div class="ex-section">
+        <h3><span class="dot"></span>Criterios de éxito</h3>
+        <div class="criteria">
+          <ul>
+            <li>Hay exactamente <strong>un</strong> <code>&lt;h1&gt;</code> en toda la página.</li>
+            <li>Los <code>&lt;h2&gt;</code> y <code>&lt;h3&gt;</code> se usan respetando su jerarquía (no saltes niveles arbitrariamente).</li>
+            <li>Eliges correctamente entre <code>&lt;ul&gt;</code> y <code>&lt;ol&gt;</code> según el sentido del contenido.</li>
+            <li>Inspecciona la página con DevTools y observa el árbol del DOM: debe verse limpio y anidado.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- EJERCICIO 3 -->
+    <article class="exercise" id="ej3">
+      <div class="ex-head">
+        <div class="ex-badge">3</div>
+        <div class="ex-title">
+          <h2>Hipertexto: enlaces e imágenes</h2>
+          <div class="ex-meta">
+            <span>⏱ 30–40 min</span>
+            <span>🎯 La "H" de HTML</span>
+            <span>🏷️ <code>a</code> <code>img</code> <code>alt</code> <code>target</code></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-section">
+        <h3><span class="dot"></span>Contexto</h3>
+        <div class="context">
+          La "H" de HTML es de <strong>HyperText</strong>: la idea original de la web es conectar documentos entre sí mediante enlaces. En el slide 7 vimos que esta es la característica que hizo nacer la web tal como la conocemos. Las imágenes (<code>&lt;img&gt;</code>) y los enlaces (<code>&lt;a&gt;</code>) son los protagonistas.
+        </div>
+      </div>
+
+      <div class="ex-section task">
+        <h3><span class="dot"></span>Qué debes hacer</h3>
+        <p>Crea un archivo <code>ejercicio-03.html</code> titulado <strong>"Mis tres lugares favoritos del mundo"</strong>. La página debe:</p>
+        <ol>
+          <li>Tener un encabezado principal con el título de la página.</li>
+          <li>Tener una breve introducción en un párrafo.</li>
+          <li>Por cada uno de los <strong>tres lugares</strong>, incluir:
+            <ul>
+              <li>Un subtítulo con el nombre del lugar.</li>
+              <li>Una <strong>imagen</strong> representativa (puede ser de internet o local). La imagen debe tener un texto alternativo que la describa para personas que no puedan verla.</li>
+              <li>Un párrafo breve explicando por qué te gusta.</li>
+              <li>Un <strong>enlace</strong> que abra el artículo de Wikipedia (u otra fuente) sobre ese lugar <strong>en una pestaña nueva</strong>.</li>
+            </ul>
+          </li>
+          <li>Al final de la página, un enlace que diga <strong>"Volver al inicio"</strong> y que al hacer clic regrese al encabezado principal de la misma página (pista: investiga sobre el atributo <code>id</code> y los enlaces internos <code>#</code>).</li>
+        </ol>
+      </div>
+
+      <div class="ex-section">
+        <h3><span class="dot"></span>Criterios de éxito</h3>
+        <div class="criteria">
+          <ul>
+            <li>Las tres imágenes cargan correctamente.</li>
+            <li>Todas las imágenes tienen texto alternativo descriptivo (no escribas "imagen" o "foto").</li>
+            <li>Los enlaces externos abren en una pestaña nueva.</li>
+            <li>El enlace "Volver al inicio" funciona como ancla interna.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- EJERCICIO 4 -->
+    <article class="exercise" id="ej4">
+      <div class="ex-head">
+        <div class="ex-badge">4</div>
+        <div class="ex-title">
+          <h2>HTML semántico (sin <code>&lt;div&gt;</code> por todas partes)</h2>
+          <div class="ex-meta">
+            <span>⏱ 40–50 min</span>
+            <span>🎯 Etiquetas con significado</span>
+            <span>🏷️ <code>header</code> <code>nav</code> <code>main</code> <code>article</code> <code>footer</code></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-section">
+        <h3><span class="dot"></span>Contexto</h3>
+        <div class="context">
+          El slide 26 dejó claro que la gran revolución de HTML5 fue la llegada de las <strong>etiquetas semánticas</strong>: <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;article&gt;</code> y <code>&lt;footer&gt;</code>. Antes todo era <code>&lt;div&gt;</code> con clases; hoy escribir HTML semántico es una marca de seniority (slide 6).
+        </div>
+      </div>
+
+      <div class="ex-section task">
+        <h3><span class="dot"></span>Qué debes hacer</h3>
+        <p>Crea un archivo <code>ejercicio-04.html</code> que sea la <strong>portada de un blog ficticio</strong> sobre el tema que prefieras (videojuegos, cocina, viajes, etc.). La página debe respetar la siguiente estructura <strong>sin usar ni un solo <code>&lt;div&gt;</code></strong>:</p>
+        <ol>
+          <li>Una cabecera de la página con el nombre del blog y un eslogan corto.</li>
+          <li>Un menú de navegación con al menos 4 enlaces (los enlaces pueden ir a <code>#</code> por ahora).</li>
+          <li>Una zona principal de contenido que contenga <strong>tres artículos</strong>. Cada artículo debe tener:
+            <ul>
+              <li>Un título del artículo.</li>
+              <li>Una fecha de publicación.</li>
+              <li>Un párrafo de resumen.</li>
+              <li>Un enlace "Leer más".</li>
+            </ul>
+          </li>
+          <li>Una sección lateral o secundaria con el título "Sobre el autor" y un par de oraciones.</li>
+          <li>Un pie de página con el copyright y el año actual.</li>
+        </ol>
+      </div>
+
+      <div class="ex-section">
+        <h3><span class="dot"></span>Criterios de éxito</h3>
+        <div class="criteria">
+          <ul>
+            <li>Cada bloque utiliza la etiqueta semántica adecuada (<code>header</code>, <code>nav</code>, <code>main</code>, <code>article</code>, <code>section</code>, <code>aside</code>, <code>footer</code>).</li>
+            <li>Cuando inspecciones el DOM con DevTools, el árbol debe ser legible "leyendo solo las etiquetas", sin necesidad de mirar el contenido.</li>
+            <li><strong>Prohibido</strong> usar <code>&lt;div&gt;</code> o <code>&lt;span&gt;</code>. Si crees que necesitas uno, vuelve a leer este ejercicio.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- EJERCICIO 5 -->
+    <article class="exercise" id="ej5">
+      <div class="ex-head">
+        <div class="ex-badge">5</div>
+        <div class="ex-title">
+          <h2>Disección con DevTools</h2>
+          <div class="ex-meta">
+            <span>⏱ 30–40 min</span>
+            <span>🎯 Investigación e inspector</span>
+            <span>🏷️ <code>Elements</code> <code>Console</code> <code>Network</code></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-section">
+        <h3><span class="dot"></span>Contexto</h3>
+        <div class="context">
+          En la presentación dedicamos varios slides al <strong>inspector del navegador</strong>: las pestañas Elements, Console, Network, Sources, etc. Un buen desarrollador front-end aprende a leer páginas que no escribió.
+        </div>
+      </div>
+
+      <div class="ex-section task">
+        <h3><span class="dot"></span>Qué debes hacer</h3>
+        <p>No vas a escribir código en este ejercicio. Vas a investigar una página real. Elige <strong>una de estas dos</strong>:</p>
+        <ul>
+          <li><a href="https://es.wikipedia.org" target="_blank" rel="noopener">https://es.wikipedia.org</a></li>
+          <li><a href="https://developer.mozilla.org/es/" target="_blank" rel="noopener">https://developer.mozilla.org/es/</a></li>
+        </ul>
+        <p>Y responde, <strong>dentro de un archivo <code>ejercicio-05.md</code></strong>, las siguientes preguntas. Incluye capturas de pantalla que demuestren cada hallazgo:</p>
+        <ol>
+          <li>¿Qué valor tiene el atributo <code>lang</code> del elemento <code>&lt;html&gt;</code> de esta página?</li>
+          <li>¿Cuántos elementos <code>&lt;h1&gt;</code> tiene la página? ¿Es lo recomendable? Justifica.</li>
+          <li>Identifica al menos <strong>tres etiquetas semánticas de HTML5</strong> presentes en la página y describe brevemente qué contienen.</li>
+          <li>Encuentra una imagen (<code>&lt;img&gt;</code>) en la página y reporta su <code>src</code> y su <code>alt</code> (si lo tiene).</li>
+          <li>Encuentra un enlace (<code>&lt;a&gt;</code>) que apunte a un sitio externo y otro que apunte a una sección interna. Comparte el HTML de ambos.</li>
+          <li>Abre la pestaña <strong>Network</strong>, recarga la página y reporta cuántos archivos se descargaron y cuánto pesó la página completa.</li>
+          <li>Abre la pestaña <strong>Console</strong> y ejecuta <code>document.querySelectorAll('a').length</code>. ¿Qué número devuelve y qué significa?</li>
+          <li><strong>Pregunta de reflexión:</strong> ¿qué decisión de diseño semántico te llamó la atención de esta página? ¿Qué harías diferente?</li>
+        </ol>
+      </div>
+
+      <div class="ex-section">
+        <h3><span class="dot"></span>Criterios de éxito</h3>
+        <div class="criteria">
+          <ul>
+            <li>Las respuestas vienen acompañadas de capturas de pantalla del inspector.</li>
+            <li>Las respuestas demuestran que entendiste la diferencia entre HTML escrito por una persona y el DOM final renderizado por el navegador.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <div>
+        <strong>Pista general:</strong> cuando dudes sobre una etiqueta o atributo, la fuente oficial siempre es <a href="https://developer.mozilla.org/es/docs/Web/HTML" target="_blank" rel="noopener">MDN Web Docs</a>. Acostúmbrate a abrirla — un desarrollador profesional la consulta varias veces al día.
+      </div>
+    </div>
+
+    <section class="delivery">
+      <h2>📦 Entrega</h2>
+      <p>Comprime los 5 archivos en una carpeta llamada <code>apellido-nombre-M2L1</code> y súbela a la carpeta compartida del curso en Google Drive:</p>
+      <p class="drive-cta-wrap">
+        <a class="drive-cta" href="https://drive.google.com/drive/folders/1Xuw5A_W0FXVpG_3JPPQkFnNpM0lZuW4Y?usp=sharing" target="_blank" rel="noopener">
+          <span class="drive-icon" aria-hidden="true">📂</span>
+          <span class="drive-text">
+            <strong>Subir mis ejercicios</strong>
+            <small>Carpeta compartida en Google Drive</small>
+          </span>
+          <span class="drive-arrow" aria-hidden="true">↗</span>
+        </a>
+      </p>
+    </section>
+
+    <footer>
+      Módulo 2 · Lección 1 — Desarrollo Web · Ejercicios prácticos de HTML
+    </footer>
+
+  </div>
+</body>
+</html>
