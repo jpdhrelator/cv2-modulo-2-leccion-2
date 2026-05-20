@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejercicios Prácticos · M2_L2 El Lenguaje HTML</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --surface-2: #f1f3f7;
+      --text: #1a1f2e;
+      --text-soft: #51596b;
+      --text-muted: #8089a1;
+      --border: #e5e8ef;
+      --primary: #4f46e5;
+      --primary-soft: #eef2ff;
+      --accent: #06b6d4;
+      --success: #10b981;
+      --success-soft: #ecfdf5;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 1px 2px rgba(20,25,45,.04), 0 1px 3px rgba(20,25,45,.04);
+      --shadow-md: 0 4px 12px rgba(20,25,45,.06), 0 2px 4px rgba(20,25,45,.04);
+      --shadow-lg: 0 20px 40px -12px rgba(20,25,45,.12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+      background-image:
+        radial-gradient(at 0% 0%, rgba(79,70,229,.06) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(6,182,212,.05) 0px, transparent 50%);
+      min-height: 100vh;
+    }
+    code, pre, .mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .container { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+
+    .hero {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
+      color: #fff; border-radius: var(--radius);
+      padding: 44px 40px; box-shadow: var(--shadow-lg); margin-bottom: 40px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M0 0h80v1H0zM0 0v80h1V0z' fill='%23ffffff' fill-opacity='.06'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; background: rgba(255,255,255,.18);
+      padding: 6px 12px; border-radius: 999px; backdrop-filter: blur(8px);
+    }
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 40px); font-weight: 800;
+      margin: 16px 0 12px; line-height: 1.15; letter-spacing: -.02em;
+    }
+    .hero p { font-size: 17px; max-width: 620px; color: rgba(255,255,255,.92); margin: 0; }
+
+    .rules {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 32px;
+      box-shadow: var(--shadow-sm); margin-bottom: 40px;
+    }
+    .rules h2 {
+      font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--primary); margin: 0 0 14px;
+    }
+    .rules ul { margin: 0; padding-left: 20px; color: var(--text-soft); }
+    .rules li { margin-bottom: 6px; }
+    .rules li::marker { color: var(--primary); }
+
+    .toc {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px; margin-bottom: 48px;
+    }
+    .toc a {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 12px 14px;
+      text-decoration: none; color: var(--text-soft);
+      font-size: 14px; font-weight: 500; transition: all .18s ease;
+    }
+    .toc a:hover {
+      transform: translateY(-2px); border-color: var(--primary);
+      color: var(--primary); box-shadow: var(--shadow-md);
+    }
+    .toc .num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 8px;
+      background: var(--primary-soft); color: var(--primary);
+      font-weight: 700; font-size: 13px; flex-shrink: 0;
+    }
+
+    .exercise {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 36px 40px;
+      box-shadow: var(--shadow-sm); margin-bottom: 28px;
+      transition: box-shadow .25s ease;
+    }
+    .exercise:hover { box-shadow: var(--shadow-md); }
+    .ex-head {
+      display: flex; align-items: flex-start; gap: 16px;
+      margin-bottom: 22px; padding-bottom: 22px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .ex-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      color: #fff; font-weight: 700; font-size: 18px;
+      flex-shrink: 0; box-shadow: 0 4px 12px rgba(79,70,229,.25);
+    }
+    .ex-title { flex: 1; }
+    .ex-title h2 {
+      margin: 0 0 4px; font-size: 22px; font-weight: 700; letter-spacing: -.01em;
+    }
+    .ex-meta {
+      font-size: 13px; color: var(--text-muted);
+      display: flex; gap: 14px; flex-wrap: wrap;
+    }
+    .ex-meta span::before { content: "·"; margin-right: 14px; color: var(--border); }
+    .ex-meta span:first-child::before { content: none; }
+
+    .ex-section { margin-top: 22px; }
+    .ex-section h3 {
+      font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+      font-weight: 700; margin: 0 0 10px; color: var(--text-muted);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .ex-section h3 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); }
+
+    .context {
+      background: var(--surface-2); border-left: 3px solid var(--accent);
+      padding: 14px 18px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      color: var(--text-soft); font-size: 15px;
+    }
+    .task { color: var(--text-soft); }
+    .task p { margin: 0 0 12px; }
+    .task ol, .task ul { padding-left: 22px; margin: 0; }
+    .task ol li, .task ul li { margin-bottom: 8px; }
+    .task ol > li::marker { color: var(--primary); font-weight: 700; }
+    .task ul > li::marker { color: var(--accent); }
+    .task strong { color: var(--text); }
+
+    .criteria {
+      background: var(--success-soft); border: 1px solid #bbf7d0;
+      border-radius: var(--radius-sm); padding: 16px 20px;
+    }
+    .criteria h3 { color: var(--success); }
+    .criteria h3 .dot { background: var(--success); }
+    .criteria ul { margin: 0; padding-left: 20px; color: #065f46; }
+    .criteria ul li::marker { content: "✓  "; color: var(--success); font-weight: 700; }
+
+    code {
+      background: var(--surface-2); color: var(--primary);
+      padding: 2px 7px; border-radius: 5px; font-size: 13.5px;
+      border: 1px solid var(--border);
+    }
+    .criteria code { background: #fff; border-color: #bbf7d0; color: #047857; }
+
+    a { color: var(--primary); text-decoration: none;
+      border-bottom: 1px dashed var(--primary); transition: color .15s; }
+    a:hover { color: #3730a3; }
+
+    .tip {
+      margin-top: 40px; background: #fffbeb; border: 1px solid #fde68a;
+      border-radius: var(--radius); padding: 20px 24px; color: #78350f;
+      font-size: 15px; display: flex; gap: 14px; align-items: flex-start;
+    }
+    .tip-icon {
+      flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px;
+      background: #fbbf24; color: #fff; display: flex;
+      align-items: center; justify-content: center; font-weight: 700;
+    }
+
+    .delivery {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 32px;
+      margin-top: 32px; box-shadow: var(--shadow-sm);
+    }
+    .delivery h2 { margin: 0 0 12px; font-size: 18px; font-weight: 700; }
+    .delivery p { color: var(--text-soft); margin: 0 0 8px; }
+
+    .drive-cta-wrap { margin: 18px 0 22px; }
+    .drive-cta {
+      display: inline-flex; align-items: center; gap: 14px;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #fff !important; text-decoration: none; border: none;
+      padding: 14px 22px 14px 18px; border-radius: var(--radius);
+      box-shadow: 0 8px 20px -6px rgba(79,70,229,.45);
+      transition: transform .15s ease, box-shadow .2s ease;
+    }
+    .drive-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -8px rgba(79,70,229,.55); color: #fff;
+    }
+    .drive-icon {
+      font-size: 26px; background: rgba(255,255,255,.18);
+      width: 44px; height: 44px; border-radius: 10px;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .drive-text { display: flex; flex-direction: column; line-height: 1.2; }
+    .drive-text strong { font-size: 15px; font-weight: 600; }
+    .drive-text small { font-size: 12.5px; opacity: .82; margin-top: 2px; }
+    .drive-arrow { font-size: 18px; margin-left: 6px; opacity: .85; }
+    .delivery-note { color: var(--text-muted); font-size: 14px; margin: 0; }
+
+    footer { text-align: center; margin-top: 56px; font-size: 13px; color: var(--text-muted); }
+
+    @media (max-width: 640px) {
+      .container { padding: 24px 16px 64px; }
+      .hero { padding: 32px 24px; }
+      .rules, .exercise, .delivery { padding: 24px 20px; }
+      .ex-head { gap: 12px; }
+      .ex-title h2 { font-size: 19px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="hero">
+      <span class="hero-eyebrow">Módulo 2 · Lección 2</span>
+      <h1>Ejercicios Prácticos · El Lenguaje HTML</h1>
+      <p>Cinco retos prácticos para aplicar lo aprendido en la presentación <strong>M2_L2 El Lenguaje HTML</strong>: estructura completa de un documento, semántica HTML5, enlaces e imágenes con sus atributos, listas anidadas, tablas básicas y formularios sencillos.</p>
+    </header>
+
+    <section class="rules">
+      <h2>📋 Antes de empezar</h2>
+      <ul>
+        <li>Cada ejercicio se entrega como un archivo <code>.html</code>.</li>
+        <li>Trabaja en <strong>VS Code</strong> con la extensión <strong>Live Server</strong>.</li>
+        <li>Solo HTML — sin CSS ni JS aún.</li>
+        <li>Indenta correctamente y cierra todas las etiquetas (buena práctica del slide 46).</li>
+        <li>Antes de entregar, valida tu HTML en <a href="https://validator.w3.org/" target="_blank" rel="noopener">validator.w3.org</a>.</li>
+      </ul>
+    </section>
+
+    <nav class="toc" aria-label="Tabla de contenidos">
+      <a href="#ej1"><span class="num">1</span> Documento HTML5</a>
+      <a href="#ej2"><span class="num">2</span> Enlaces e imágenes</a>
+      <a href="#ej3"><span class="num">3</span> Listas anidadas</a>
+      <a href="#ej4"><span class="num">4</span> Semántica + tabla</a>
+      <a href="#ej5"><span class="num">5</span> Formulario</a>
+    </nav>
+
+    <!-- EJERCICIO 1 -->
+    <article class="exercise" id="ej1">
+      <div class="ex-head">
+        <div class="ex-badge">1</div>
+        <div class="ex-title">
+          <h2>Documento HTML5 completo</h2>
+          <div class="ex-meta">
+            <span>🎯 Cabecera del documento</span>
+            <span>🏷️ <code>DOCTYPE</code> <code>meta</code> <code>title</code> <code>lang</code></span>
+          </div>
+        </div>
+      </div>
+      <div class="ex-section">
+        <h3><span class="dot"></span>Contexto</h3>
+        <div class="context">
+          En el slide 10 vimos que un documento HTML válido necesita <code>&lt;!DOCTYPE html&gt;</code>, un <code>&lt;html&gt;</code> con dos hijos (<code>&lt;head&gt;</code> y <code>&lt;body&gt;</code>), y dentro del head un <code>&lt;meta charset&gt;</code> y un <code>&lt;title&gt;</code> (este último es la única etiqueta obligatoria del head, slide 11).
+        </div>
+      </div>
+      <div class="ex-section task">
+        <h3><span class="dot"></span>Qué debes hacer</h3>
+        <ol>
+          <li>Crea un archivo <code>ejercicio-01.html</code>.</li>
+          <li>Construye un documento HTML5 que incluya:
+            <ul>
+              <li>La declaración <code>&lt;!DOCTYPE html&gt;</code> al inicio (slide 47).</li>
+              <li>Un elemento <code>&lt;html&gt;</code> con atributo <code>lang</code> para español.</li>
+              <li>Dentro del <code>&lt;head&gt;</code>:
+                <ul>
+                  <li>Un <code>&lt;meta&gt;</code> que indique la codificación <strong>UTF-8</strong>.</li>
+                  <li>Un <code>&lt;meta&gt;</code> con el <code>name="viewport"</code> para móviles.</li>
+                  <li>Un <code>&lt;meta&gt;</code> con una descripción corta (<code>name="description"</code>).</li>
+                  <li>Un <code>&lt;title&gt;</code> con el texto <strong>"Mi portafolio web"</strong>.</li>
+                </ul>
+              </li>
+              <li>Dentro del <code>&lt;body&gt;</code>:
+                <ul>
+                  <li>Un encabezado <code>&lt;h1&gt;</code> con tu nombre completo.</li>
+                  <li>Un párrafo con una breve presentación (3-4 oraciones).</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>Añade al menos <strong>un comentario HTML</strong> (<code>&lt;!-- ... --&gt;</code>) explicando alguna parte del código.</li>
+        </ol>
+      </div>
+      <div class="ex-section">
+        <h3><span class="dot"></span>Criterios de éxito</h3>
+        <div class="criteria">
+          <ul>
+            <li>El documento pasa la validación del W3C sin errores.</li>
+            <li>En la pestaña del navegador se ve el título correcto.</li>
+            <li>Caracteres especiales como "ñ" y tildes se muestran sin errores raros.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- EJERCICIO 2 -->
+    <article class="exercise" id="ej2">
+      <div class="ex-head">
+        <div class="ex-badge">2</div>
+        <div class="ex-title">
+          <h2>Enlaces e imágenes con todos sus atributos</h2>
+          <div class="ex-meta">
+            <span>🎯 Hipertexto y multimedia</span>
+            <span>🏷️ <code>a</code> <code>img</code> <code>href</code> <code>src</code> <code>alt</code> <code>target</code> <code>download</code></span>
+          </div>
+        </div>
+      </div>
+      <div class="ex-section">
+        <h3><span class="dot"></span>Contexto</h3>
+        <div class="context">
+          Los slides 21–27 cubrieron en detalle las dos etiquetas que dan nombre a HTML (HyperText) y la web visual: <code>&lt;a&gt;</code> con sus atributos <code>href</code>, <code>target</code>, <code>rel</code>, <code>download</code>; e <code>&lt;img&gt;</code> con <code>src</code>, <code>alt</code>, <code>width</code>, <code>height</code>.
+        </div>
+      </div>
+      <div class="ex-section task">
+        <h3><span class="dot"></span>Qué debes hacer</h3>
+        <p>Crea un archivo <code>ejercicio-02.html</code> titulado <strong>"Recursos de aprendizaje para front-end"</strong>. La página debe contener:</p>
+        <ol>
+          <li>Un encabezado principal con el título.</li>
+          <li>Un párrafo introductorio.</li>
+          <li>Una sección con <strong>al menos 4 enlaces</strong>:
+            <ul>
+              <li>Un enlace a MDN Web Docs que se abra en <strong>una pestaña nueva</strong>.</li>
+              <li>Un enlace a W3C que se abra en la <strong>misma pestaña</strong> (uso explícito de <code>target="_self"</code>).</li>
+              <li>Un enlace a un PDF que se <strong>descargue automáticamente</strong> (atributo <code>download</code>).</li>
+              <li>Un enlace por correo electrónico que abra el cliente de correo (pista: investiga <code>mailto:</code>).</li>
+            </ul>
+          </li>
+          <li>Una galería con <strong>3 imágenes</strong>:
+            <ul>
+              <li>Cada imagen con su <code>src</code>, su <code>alt</code> descriptivo y sus <code>width</code> y <code>height</code>.</li>
+              <li>Cada imagen envuelta en un enlace que apunte a la imagen en tamaño completo y se abra en pestaña nueva.</li>
+            </ul>
+          </li>
+          <li>Un comentario antes de la galería explicando qué hace ese bloque.</li>
+        </ol>
+      </div>
+      <div class="ex-section">
+        <h3><span class="dot"></span>Criterios de éxito</h3>
+        <div class="criteria">
+          <ul>
+            <li>Todos los enlaces funcionan según lo descrito.</li>
+            <li>Todas las imágenes cargan y tienen un <code>alt</code> útil (no "imagen 1").</li>
+            <li>El enlace de descarga efectivamente fuerza la descarga.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- EJERCICIO 3 -->
+    <article class="exercise" id="ej3">
+      <div class="ex-head">
+        <div class="ex-badge">3</div>
+        <div class="ex-title">
+          <h2>Listas anidadas: el menú de un restaurante</h2>
+          <div class="ex-meta">
+            <span>🎯 Jerarquía con listas</span>
+            <span>🏷️ <code>ul</code> <code>ol</code> <code>li</code></span>
+          </div>
+        </div>
+      </div>
+      <div class="ex-section">
+        <h3><span class="dot"></span>Contexto</h3>
+        <div class="context">
+          En los slides 29–33 vimos las listas no ordenadas (<code>&lt;ul&gt;</code>), las ordenadas (<code>&lt;ol&gt;</code>) y, lo más importante, cómo <strong>anidar</strong> listas para representar jerarquías reales.
+        </div>
+      </div>
+      <div class="ex-section task">
+        <h3><span class="dot"></span>Qué debes hacer</h3>
+        <p>Crea un archivo <code>ejercicio-03.html</code> con el <strong>menú de un restaurante ficticio</strong>:</p>
+        <ol>
+          <li>Un encabezado principal con el nombre del restaurante.</li>
+          <li>Una <strong>lista no ordenada</strong> de <strong>categorías</strong> del menú (al menos 4: Entradas, Platos principales, Postres, Bebidas).</li>
+          <li>Dentro de cada categoría debe haber una <strong>lista anidada</strong> con al menos 3 platos.</li>
+          <li>Para "Platos principales", cada plato debe contener a su vez una <strong>lista no ordenada</strong> con los ingredientes principales (al menos 3).</li>
+          <li>Una sección final "Pasos para hacer la reserva" usando una <strong>lista ordenada</strong> con al menos 4 pasos (porque el orden importa).</li>
+        </ol>
+      </div>
+      <div class="ex-section">
+        <h3><span class="dot"></span>Criterios de éxito</h3>
+        <div class="criteria">
+          <ul>
+            <li>La anidación se hace correctamente: el sublista va <strong>dentro</strong> de un <code>&lt;li&gt;</code>, no entre <code>&lt;li&gt;</code>s.</li>
+            <li>Se usa <code>&lt;ul&gt;</code> para lo que no tiene orden y <code>&lt;ol&gt;</code> para lo que sí.</li>
+            <li>Al inspeccionar con DevTools, el árbol del DOM refleja la jerarquía visual.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- EJERCICIO 4 -->
+    <article class="exercise" id="ej4">
+      <div class="ex-head">
+        <div class="ex-badge">4</div>
+        <div class="ex-title">
+          <h2>Página completa con estructura semántica + tabla</h2>
+          <div class="ex-meta">
+            <span>🎯 Layout y datos tabulares</span>
+            <span>🏷️ <code>header</code> <code>nav</code> <code>main</code> <code>aside</code> <code>footer</code> <code>table</code></span>
+          </div>
+        </div>
+      </div>
+      <div class="ex-section">
+        <h3><span class="dot"></span>Contexto</h3>
+        <div class="context">
+          Los slides 14–19 mostraron el layout estándar con etiquetas semánticas y el slide 34 trató las tablas para mostrar <strong>datos tabulares</strong> (jamás para maquetar — "una aberración" según la presentación).
+        </div>
+      </div>
+      <div class="ex-section task">
+        <h3><span class="dot"></span>Qué debes hacer</h3>
+        <p>Crea <code>ejercicio-04.html</code> con el <strong>horario de clases</strong> de un curso (real o ficticio). <strong>Prohibido usar <code>&lt;div&gt;</code></strong>. La página debe contener:</p>
+        <ol>
+          <li>Un <code>&lt;header&gt;</code> con el nombre del curso y un subtítulo.</li>
+          <li>Un <code>&lt;nav&gt;</code> con al menos 4 enlaces (pueden ir a <code>#</code>).</li>
+          <li>Un <code>&lt;main&gt;</code> o <code>&lt;section&gt;</code> con:
+            <ul>
+              <li>Un párrafo introductorio explicando de qué semestre es el horario.</li>
+              <li>Una <strong>tabla</strong> con el horario semanal: <strong>filas</strong> = bloques horarios (al menos 5), <strong>columnas</strong> = días (lunes a viernes). Cada celda contiene la asignatura.</li>
+              <li>Primera fila con los nombres de los días y primera columna con los horarios.</li>
+            </ul>
+          </li>
+          <li>Un <code>&lt;aside&gt;</code> con un recuadro de "Recordatorios importantes".</li>
+          <li>Un <code>&lt;footer&gt;</code> con el copyright y el año actual.</li>
+        </ol>
+      </div>
+      <div class="ex-section">
+        <h3><span class="dot"></span>Criterios de éxito</h3>
+        <div class="criteria">
+          <ul>
+            <li>No hay ni un solo <code>&lt;div&gt;</code> en el documento.</li>
+            <li>La tabla se construye con <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code> y <code>&lt;td&gt;</code> (pista: investiga también <code>&lt;thead&gt;</code> y <code>&lt;th&gt;</code> para los encabezados).</li>
+            <li>Cada bloque del layout está envuelto en su etiqueta semántica adecuada.</li>
+            <li>El documento valida sin errores en W3C.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- EJERCICIO 5 -->
+    <article class="exercise" id="ej5">
+      <div class="ex-head">
+        <div class="ex-badge">5</div>
+        <div class="ex-title">
+          <h2>Formulario de inscripción al curso</h2>
+          <div class="ex-meta">
+            <span>🎯 Inputs y controles</span>
+            <span>🏷️ <code>form</code> <code>input</code> <code>select</code> <code>option</code> <code>button</code></span>
+          </div>
+        </div>
+      </div>
+      <div class="ex-section">
+        <h3><span class="dot"></span>Contexto</h3>
+        <div class="context">
+          Los slides 35–44 cubrieron la etiqueta <code>&lt;form&gt;</code> con sus atributos <code>action</code> y <code>method</code>, y los 6 tipos de <code>&lt;input&gt;</code> vistos: <code>text</code>, <code>password</code>, <code>checkbox</code>, <code>radio</code>, <code>submit</code> y <code>button</code>, además de <code>&lt;select&gt;</code> con <code>&lt;option&gt;</code>.
+        </div>
+      </div>
+      <div class="ex-section task">
+        <h3><span class="dot"></span>Qué debes hacer</h3>
+        <p>Crea <code>ejercicio-05.html</code> con un <strong>formulario de inscripción a un curso</strong>:</p>
+        <ol>
+          <li>Un encabezado principal con el título del formulario.</li>
+          <li>Un párrafo introductorio.</li>
+          <li>Un <code>&lt;form&gt;</code> que:
+            <ul>
+              <li>Tenga atributo <code>action="procesar.php"</code> y <code>method="post"</code>.</li>
+              <li>Contenga los siguientes campos (cada uno con su atributo <code>name</code>):
+                <ul>
+                  <li><strong>Nombre completo</strong> (<code>type="text"</code>).</li>
+                  <li><strong>Correo electrónico</strong> (<code>type="text"</code>).</li>
+                  <li><strong>Contraseña</strong> (<code>type="password"</code>).</li>
+                  <li><strong>Edad</strong> (puedes usar <code>type="text"</code>).</li>
+                  <li><strong>Nivel de experiencia</strong> con un <code>&lt;select&gt;</code> de al menos 4 opciones.</li>
+                  <li><strong>Modalidad preferida</strong>: dos <code>radio</code> (Presencial / En línea) — deben <strong>compartir el mismo <code>name</code></strong>.</li>
+                  <li><strong>Temas de interés</strong>: al menos 3 <code>checkbox</code>.</li>
+                  <li>Un botón <code>type="submit"</code> con texto "Enviar inscripción".</li>
+                  <li>Un botón <code>type="button"</code> con texto "Limpiar".</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>Incluye comentarios HTML separando las secciones del formulario.</li>
+        </ol>
+      </div>
+      <div class="ex-section">
+        <h3><span class="dot"></span>Criterios de éxito</h3>
+        <div class="criteria">
+          <ul>
+            <li>El formulario tiene los 6 tipos de input/control vistos en la presentación.</li>
+            <li>Los dos radio buttons son <strong>mutuamente excluyentes</strong> (porque comparten el mismo <code>name</code>).</li>
+            <li>Al hacer clic en "Enviar inscripción" el navegador intenta enviar el formulario a <code>procesar.php</code>.</li>
+            <li>El documento valida sin errores en W3C.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <div>
+        <strong>Pista general:</strong> cuando dudes sobre una etiqueta o atributo, la fuente oficial siempre es <a href="https://developer.mozilla.org/es/docs/Web/HTML" target="_blank" rel="noopener">MDN Web Docs</a>. Un desarrollador profesional la consulta varias veces al día.
+      </div>
+    </div>
+
+    <section class="delivery">
+      <h2>📦 Entrega</h2>
+      <p>Comprime los 5 archivos en una carpeta llamada <code>apellido-nombre-M2L2</code> y súbela a la carpeta compartida del curso en Google Drive:</p>
+      <p class="drive-cta-wrap">
+        <a class="drive-cta" href="https://drive.google.com/drive/folders/1Xuw5A_W0FXVpG_3JPPQkFnNpM0lZuW4Y?usp=sharing" target="_blank" rel="noopener">
+          <span class="drive-icon" aria-hidden="true">📂</span>
+          <span class="drive-text">
+            <strong>Subir mis ejercicios</strong>
+            <small>Carpeta compartida en Google Drive</small>
+          </span>
+          <span class="drive-arrow" aria-hidden="true">↗</span>
+        </a>
+      </p>
+    </section>
+
+    <footer>
+      Módulo 2 · Lección 2 — El Lenguaje HTML · Ejercicios prácticos
+    </footer>
+
+  </div>
+</body>
+</html>
