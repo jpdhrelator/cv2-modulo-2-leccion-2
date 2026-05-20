@@ -134,8 +134,7 @@ Y responde, **dentro de un archivo `ejercicio-05.md`**, las siguientes preguntas
 6. Abre la pestaña **Network**, recarga la página y reporta:
    - Cuántos archivos se descargaron en total.
    - Cuánto pesó la página completa.
-7. Abre la pestaña **Console** y ejecuta `document.querySelectorAll('a').length`. ¿Qué número devuelve? ¿Qué significa ese número?
-8. **Pregunta final de reflexión:** ¿qué decisión de diseño semántico te llamó la atención de esta página? ¿Qué harías diferente?
+7. **Pregunta final de reflexión:** ¿qué decisión de diseño semántico te llamó la atención de esta página? ¿Qué harías diferente?
 
 **Criterios de éxito:**
 
@@ -146,7 +145,7 @@ Y responde, **dentro de un archivo `ejercicio-05.md`**, las siguientes preguntas
 
 ## Entrega
 
-Comprime los 5 archivos en una carpeta llamada `apellido-nombre-M2L1` y súbela al sistema de entrega del curso. Si no puedes terminar alguno, entrega lo que tengas con un comentario al inicio del archivo explicando hasta dónde llegaste y qué te bloqueó.
+Comprime los 5 archivos en una carpeta llamada `apellido-nombre-M2L1` y súbela al [aqui](https://drive.google.com/drive/folders/1Xuw5A_W0FXVpG_3JPPQkFnNpM0lZuW4Y?usp=sharing). Si no puedes terminar alguno, entrega lo que tengas con un comentario al inicio del archivo explicando hasta dónde llegaste y qué te bloqueó.
 
 > **Pista general:** cuando dudes sobre una etiqueta o atributo, la fuente oficial siempre es [MDN Web Docs](https://developer.mozilla.org/es/docs/Web/HTML). Acostúmbrate a abrirla — un desarrollador profesional la consulta varias veces al día.
 
